@@ -28,7 +28,11 @@ def generate_plans(budget, region, lifestyle):
     print("Available regions:", df['region'].unique())
 
     lifestyle = lifestyle.replace('-', '_')
-    filtered = df[(df['region'] == region) & (df['lifestyle'] == lifestyle)]
+    filtered = df[
+    (df['region'].str.lower() == region.lower()) &
+    (df['lifestyle'].str.lower() == lifestyle.lower())
+]
+
 
     if filtered.empty:
         return {"plans": []}
