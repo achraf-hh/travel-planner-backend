@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from mongoengine import connect  # <-- Add this import for MongoEngine
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -55,7 +56,6 @@ MIDDLEWARE = [
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
@@ -76,7 +76,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
-# Database
+# Default Database: still using SQLite for Django's internal models
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
@@ -127,3 +127,21 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# ------------------------------
+# MongoEngine Configuration
+# ------------------------------
+# This section sets up the connection to your MongoDB database for storing travel plans.
+# If you're running MongoDB locally:
+connect(
+    db="travelplanner",       # name of your MongoDB database
+    host="localhost",         # local host; change if needed
+    port=27017                # default MongoDB port
+)
+
+# If you're using MongoDB Atlas, replace the connect() with:
+# connect(
+#     db="travelplanner",
+#     host="mongodb+srv://<USERNAME>:<PASSWORD>@cluster0.mongodb.net/travelplanner?retryWrites=true&w=majority"
+# )
