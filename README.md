@@ -1,5 +1,3 @@
-
-```markdown
 # Travel Planner Backend (Django + DRF)
 
 This is the backend for the Travel Planner App. It provides a RESTful API that receives a user's budget, travel region, and lifestyle preference, then returns customized travel plans based on real-world data. Users can also confirm and save selected travel plans.
