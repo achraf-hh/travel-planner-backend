@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-b=jfrh3flf0jt57a3k4l#_9ljdq!0dk&beu_+(jix77cvtp(0g
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["travel-planner-backend-qeum.onrender.com"]
 
 
 # Application definition
