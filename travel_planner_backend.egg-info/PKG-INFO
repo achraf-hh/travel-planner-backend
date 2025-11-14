@@ -1,3 +1,26 @@
+Metadata-Version: 2.4
+Name: travel-planner-backend
+Version: 0.1.0
+Summary: Django REST backend that generates and stores customized travel plans.
+Author: Travel Planner Team
+License: UNLICENSED
+Project-URL: Homepage, https://example.com/travel-planner
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: asgiref==3.8.1
+Requires-Dist: Django==5.2
+Requires-Dist: django-cors-headers==4.7.0
+Requires-Dist: djangorestframework==3.16.0
+Requires-Dist: gunicorn==23.0.0
+Requires-Dist: numpy==2.2.4
+Requires-Dist: packaging==24.2
+Requires-Dist: pandas==2.2.3
+Requires-Dist: python-dateutil==2.9.0.post0
+Requires-Dist: pytz==2025.2
+Requires-Dist: six==1.17.0
+Requires-Dist: sqlparse==0.5.3
+Requires-Dist: tzdata==2025.2
+
 # Travel Planner Backend (Django + DRF)
 
 This is the backend for the Travel Planner App. It provides a RESTful API that receives a user's budget, travel region, and lifestyle preference, then returns customized travel plans based on real-world data. Users can also confirm and save selected travel plans.
@@ -60,23 +83,6 @@ This repo ships with a `pyproject.toml` definition plus a `Makefile` that demons
 - `make package` → Packaging (invokes `python -m build` to emit an sdist + wheel under `dist/` based on `pyproject.toml` metadata and package discovery rules).
 
 Run `make help` to list the commands, or inspect the `Makefile` for additional context.
-
----
-
-## ▶️ Build, Test & Run
-
-Follow these exact steps to reproduce the build locally:
-
-1. **Install dependencies**: `make deps`
-2. **Compile optional bytecode check** (optional but fast): `make compile`
-3. **Build distributables**: `make build` (outputs wheel + sdist into `dist/`)
-
-Testing and running use simple commands as well:
-
-- **Run automated tests**: `make test` (wraps `python manage.py test`)
-- **Start the API locally**: `make run` (runs `python manage.py runserver 0.0.0.0:8000`; stop with `Ctrl+C`)
-
-These commands ensure reviewers can build, test, and run the service consistently without manual setup.
 
 ---
 

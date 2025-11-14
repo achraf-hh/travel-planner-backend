@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "travel-planner-backend"
+version = "0.1.0"
+description = "Django REST backend that generates and stores customized travel plans."
+readme = "README.md"
+requires-python = ">=3.12"
+license = "UNLICENSED"
+authors = [
+  {name = "Travel Planner Team"}
+]
+keywords = ["travel", "django", "rest", "planner", "backend"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Framework :: Django",
+  "Intended Audience :: Developers",
+  "License :: Other/Proprietary License",
+  "Operating System :: OS Independent",
+  "Topic :: Internet :: WWW/HTTP :: Dynamic Content"
+]
+dependencies = [
+  "asgiref==3.8.1",
+  "Django==5.2",
+  "django-cors-headers==4.7.0",
+  "djangorestframework==3.16.0",
+  "gunicorn==23.0.0",
+  "numpy==2.2.4",
+  "packaging==24.2",
+  "pandas==2.2.3",
+  "python-dateutil==2.9.0.post0",
+  "pytz==2025.2",
+  "six==1.17.0",
+  "sqlparse==0.5.3",
+  "tzdata==2025.2"
+]
+
+[project.urls]
+Homepage = "https://example.com/travel-planner"
+
+[tool.setuptools.packages.find]
+include = ["config*", "trips*", "ml_models*"]
+
+[tool.setuptools.package-data]
+ml_models = ["data/*.csv"]
