@@ -1,10 +1,16 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
+
+import logging
+
 from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from ml_models.planner import generate_plans
-from .serializers import PlanRequestSerializer, ConfirmedTripSerializer
+
 from .models import ConfirmedTrip
-import uuid
+from .serializers import ConfirmedTripSerializer, PlanRequestSerializer
+
+logger = logging.getLogger("travel_planner.trips")
 
 # Currency exchange rates to MAD
 EXCHANGE_RATES = {
@@ -20,7 +26,7 @@ class PlanView(APIView):
         serializer = PlanRequestSerializer(data=request.data)
         if serializer.is_valid():
             data = serializer.validated_data
-            print("Validated data:", data)
+            logger.debug("Validated plan request: %s", data)
 
             currency = data['currency']
             exchange_rate = EXCHANGE_RATES.get(currency, 1)
@@ -32,8 +38,10 @@ class PlanView(APIView):
                 lifestyle=data['lifestyle']
             )
 
+            logger.info("Generated plans for region=%s, lifestyle=%s, currency=%s", data['region'], data['lifestyle'], currency)
             return Response(result, status=status.HTTP_200_OK)
 
+        logger.warning("Plan request validation failed: %s", serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -47,6 +55,7 @@ class ConfirmTripView(APIView):
             lifestyle = request.data.get('lifestyle')
 
             if not selected_plan or not selected_plan.get('id'):
+                logger.warning("Confirm trip attempted without selectedPlan id")
                 return Response({"error": "selectedPlan with id is required"}, status=400)
 
             trip = ConfirmedTrip.objects.create(
@@ -65,6 +74,7 @@ class ConfirmTripView(APIView):
             }, status=status.HTTP_201_CREATED)
 
         except Exception as e:
+            logger.error("Failed to confirm trip: %s", e, exc_info=True)
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
@@ -81,11 +91,6 @@ class ConfirmedTripsListView(APIView):
             trips = trips.filter(lifestyle__iexact=lifestyle)
 
         trips = trips.order_by('-created_at')
+        logger.info("Listing confirmed trips filters region=%s lifestyle=%s count=%s", region, lifestyle, trips.count())
         serializer = ConfirmedTripSerializer(trips, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
-    
-from django.core.cache import cache  # Optional if you want caching
-
-
-  

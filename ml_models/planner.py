@@ -1,11 +1,11 @@
-import pandas as pd
-import random
-import os
-import uuid
 import logging
+import os
+import random
+import uuid
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
+import pandas as pd
+
+logger = logging.getLogger("travel_planner.ml_models")
 
 # Constants
 DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "activities.csv")
@@ -51,24 +51,26 @@ def generate_plans(budget, region, lifestyle, num_plans=DEFAULT_NUM_PLANS, durat
     try:
         df = pd.read_csv(DATA_PATH)
     except FileNotFoundError:
-        logging.error("Data file not found at %s", DATA_PATH)
+        logger.critical("Planner data file not found at %s", DATA_PATH)
         return {"error": "Data file not found."}
     except pd.errors.EmptyDataError:
-        logging.error("Data file is empty or corrupted.")
+        logger.error("Data file is empty or corrupted.")
         return {"error": "Data file is empty or corrupted."}
+
+    logger.debug("Generating plans with budget=%s, region=%s, lifestyle=%s", budget, region, lifestyle)
 
     # Normalize inputs
     lifestyle = lifestyle.replace('-', '_').lower()
     region = region.lower()
 
     # Debugging information
-    logging.info("Available lifestyles: %s", df['lifestyle'].unique())
-    logging.info("Available regions: %s", df['region'].unique())
+    logger.info("Available lifestyles: %s", df['lifestyle'].unique())
+    logger.info("Available regions: %s", df['region'].unique())
 
     # Filter activities based on region and lifestyle
     filtered = filter_activities(df, region, lifestyle)
     if filtered.empty:
-        logging.warning("No activities found for region '%s' and lifestyle '%s'.", region, lifestyle)
+        logger.warning("No activities found for region '%s' and lifestyle '%s'.", region, lifestyle)
         return {"plans": []}
 
     # Select accommodation
@@ -131,4 +133,5 @@ def generate_plans(budget, region, lifestyle, num_plans=DEFAULT_NUM_PLANS, durat
 
         plans.append(plan)
 
+    logger.info("Generated %s plan(s) for region=%s, lifestyle=%s", len(plans), region, lifestyle)
     return {"plans": plans}

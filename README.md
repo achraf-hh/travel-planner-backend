@@ -94,6 +94,21 @@ To reset artifacts, use `make clean`.
 
 ## 🔌 API Usage
 
+## 🧹 Static Analysis
+
+Configuration lives in `pyproject.toml` under `[tool.ruff]`.
+
+- Install: `pip install ruff`
+- Run: `ruff check .`
+- Optional autofix: `ruff check . --fix`
+
+### Pre-commit hooks
+
+- Install framework: `pip install pre-commit`
+- Install hooks for this repo: `pre-commit install`
+- Run once on all files: `pre-commit run --all-files`
+- Configuration: `.pre-commit-config.yaml` (uses Ruff with autofix plus basic whitespace fixers)
+
 Base URL (local): `http://localhost:8000/api/`
 
 ### 1. Generate Plans – `POST /api/plan/`
