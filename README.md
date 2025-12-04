@@ -109,6 +109,14 @@ Configuration lives in `pyproject.toml` under `[tool.ruff]`.
 - Run once on all files: `pre-commit run --all-files`
 - Configuration: `.pre-commit-config.yaml` (uses Ruff with autofix plus basic whitespace fixers)
 
+## 📚 Reference Documentation
+
+Generate static HTML docs with pdoc (Django is prepped inside the helper script):
+
+- Install: `pip install pdoc`
+- Generate: `make docs` (or `PYTHONPATH=$PWD DJANGO_SETTINGS_MODULE=config.settings python scripts/generate_docs.py`)
+- Output: `docs/` (open `docs/index.html`)
+
 Base URL (local): `http://localhost:8000/api/`
 
 ### 1. Generate Plans – `POST /api/plan/`

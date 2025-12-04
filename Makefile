@@ -23,6 +23,9 @@ compile: ## Compilation
 test: ## Run Django tests
 	$(PYTHON) manage.py test
 
+docs: ## Generate static API docs with pdoc
+	PYTHONPATH=$(PWD) DJANGO_SETTINGS_MODULE=config.settings $(PYTHON) scripts/generate_docs.py
+
 run: ## Run the development server
 	$(PYTHON) manage.py runserver 0.0.0.0:8000
 

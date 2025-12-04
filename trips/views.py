@@ -1,4 +1,6 @@
 
+"""REST API views for generating and storing travel plans."""
+
 import logging
 
 from rest_framework import status
@@ -23,6 +25,7 @@ EXCHANGE_RATES = {
 
 class PlanView(APIView):
     def post(self, request):
+        """Validate request, convert budget to MAD, and return generated plans."""
         serializer = PlanRequestSerializer(data=request.data)
         if serializer.is_valid():
             data = serializer.validated_data
@@ -47,6 +50,7 @@ class PlanView(APIView):
 
 class ConfirmTripView(APIView):
     def post(self, request):
+        """Persist a selected plan and return the stored trip payload."""
         try:
             selected_plan = request.data.get('selectedPlan')
             region = request.data.get('region')
@@ -80,6 +84,7 @@ class ConfirmTripView(APIView):
 
 class ConfirmedTripsListView(APIView):
     def get(self, request):
+        """List confirmed trips, optionally filtered by region and lifestyle."""
         region = request.query_params.get('region')
         lifestyle = request.query_params.get('lifestyle')
 

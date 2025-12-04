@@ -1,3 +1,9 @@
+"""Plan generation helpers for travel itineraries.
+
+Reads travel activities from CSV, filters by region/lifestyle, and assembles
+budget-aware plans with simple accommodation picks.
+"""
+
 import logging
 import os
 import random
@@ -14,18 +20,7 @@ DEFAULT_PLAN_DURATION_DAYS = 3
 DEFAULT_NUM_PLANS = 3
 
 def filter_activities(df, region, lifestyle, activity_types=None):
-    """
-    Filter activities based on region, lifestyle, and optional activity types.
-
-    Args:
-        df (DataFrame): The activities DataFrame.
-        region (str): The target region.
-        lifestyle (str): The lifestyle preference.
-        activity_types (list, optional): List of activity types to filter by.
-
-    Returns:
-        DataFrame: A filtered DataFrame of activities.
-    """
+    """Return activities matching region/lifestyle, optionally constrained to activity types."""
     filtered = df[
         (df['region'].str.lower() == region.lower()) &
         (df['lifestyle'].str.lower() == lifestyle.lower())
@@ -35,18 +30,17 @@ def filter_activities(df, region, lifestyle, activity_types=None):
     return filtered
 
 def generate_plans(budget, region, lifestyle, num_plans=DEFAULT_NUM_PLANS, duration_days=DEFAULT_PLAN_DURATION_DAYS):
-    """
-    Generate travel plans based on budget, region, and lifestyle.
+    """Build itineraries for a given MAD budget, region, and lifestyle.
 
     Args:
-        budget (int): The budget in MAD.
-        region (str): The target region for the travel plan.
-        lifestyle (str): The lifestyle preference (e.g., 'adventure', 'relaxation').
-        num_plans (int): Number of plans to generate.
-        duration_days (int): Duration of each plan in days.
+        budget (int | float): Budget in MAD.
+        region (str): Destination region (case-insensitive).
+        lifestyle (str): Lifestyle bucket (e.g., explorer, food_lover).
+        num_plans (int): How many plans to return.
+        duration_days (int): Number of days per plan.
 
     Returns:
-        dict: A dictionary containing a list of generated plans.
+        dict: {"plans": [...]} or {"error": "..."} when data is missing.
     """
     try:
         df = pd.read_csv(DATA_PATH)

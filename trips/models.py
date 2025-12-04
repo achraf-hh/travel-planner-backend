@@ -1,6 +1,11 @@
+"""Models for persisted travel plans."""
+
 from django.db import models
 
+
 class ConfirmedTrip(models.Model):
+    """Persisted travel plan selection with request context and chosen plan payload."""
+
     region = models.CharField(max_length=100)
     budget = models.FloatField()
     currency = models.CharField(max_length=10)
