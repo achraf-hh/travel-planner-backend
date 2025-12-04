@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import PlanView, ConfirmTripView, ConfirmedTripsListView
 
+from .views import ConfirmedTripsListView, ConfirmTripView, PlanView
 
 urlpatterns = [
     path('plan/', PlanView.as_view(), name='generate-plan'),

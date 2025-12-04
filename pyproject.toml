@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Django REST backend that generates and stores customized travel plans."
 readme = "README.md"
 requires-python = ">=3.12"
-license = "UNLICENSED"
+license = "MIT"
 authors = [
   {name = "Travel Planner Team"}
 ]
@@ -18,7 +18,7 @@ classifiers = [
   "Programming Language :: Python :: 3.12",
   "Framework :: Django",
   "Intended Audience :: Developers",
-  "License :: Other/Proprietary License",
+  "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
   "Topic :: Internet :: WWW/HTTP :: Dynamic Content"
 ]
