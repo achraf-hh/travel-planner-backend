@@ -1,0 +1,65 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: install deps
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+          python -m pip install build ruff bandit pdoc
+
+      - name: run tests
+        run: |
+          mkdir -p reports
+          python manage.py test | tee reports/tests.txt
+
+      - name: static analysis
+        run: |
+          ruff check . | tee reports/ruff.txt
+          bandit -r config trips ml_models -f txt -o reports/bandit.txt
+
+      - name: build package
+        run: make build
+
+      - name: generate docs
+        run: make docs
+
+      - name: generate changelog
+        run: |
+          CURRENT_TAG="${GITHUB_REF_NAME}"
+          PREV_TAG="$(git tag --sort=-creatordate | grep -v "^${CURRENT_TAG}$" | head -n 1 || true)"
+          if [ -z "$PREV_TAG" ]; then
+            git log --pretty=format:"- %s (%h)" > reports/CHANGELOG.md
+          else
+            git log --pretty=format:"- %s (%h)" "${PREV_TAG}..HEAD" > reports/CHANGELOG.md
+          fi
+
+      - name: create release
+        uses: softprops/action-gh-release@v2
+        with:
+          body_path: reports/CHANGELOG.md
+          files: |
+            dist/*
+            reports/*
